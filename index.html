@@ -1,18 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-	<title>Hello</title>
-	<style type="text/css">
-		html { 
-		  background: url(images/img.jpg) no-repeat center center fixed; 
-		  -webkit-background-size: cover;
-		  -moz-background-size: cover;
-		  -o-background-size: cover;
-		  background-size: cover;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò Chơi Cân Bằng Phương Trình Hóa Học</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f0; }
+        .game-container { max-width: 600px; margin: 20px auto; padding: 20px; background: #fff; border-radius: 10px; }
+        .equation { font-size: 24px; margin: 20px 0; }
+        input { width: 40px; text-align: center; margin: 0 5px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #45a049; }
+        #result { font-size: 18px; margin-top: 20px; }
+        #image { display: none; max-width: 200px; margin-top: 20px; }
+    </style>
 </head>
 <body>
-	
+    <div class="game-container">
+        <h1>Giải Mã Bức Tranh Hóa Học</h1>
+        <p>Điền hệ số để cân bằng phương trình. Hoàn thành để mở khóa bức tranh!</p>
+        <div class="equation" id="equation">
+            __ H₂ + __ O₂ → __ H₂O
+        </div>
+        <div>
+            <input id="coef1" type="number" min="1" value="1">
+            H₂ +
+           she2 + O₂ → 
+            <input id="coef2" type="number" min="1" value="1">
+            H₂O
+            <button onclick="checkAnswer()">Kiểm tra</button>
+        </div>
+        <div id="result"></div>
+        <img id="image" src="https://via.placeholder.com/200x200?text=H2O" alt="Bức tranh hóa học">
+    </div>
+
+    <script>
+        const correctAnswer = [2, 1, 2]; // Đáp án đúng: 2H₂ + O₂ → 2H₂O
+
+        function checkAnswer() {
+            const coef1 = parseInt(document.getElementById('coef1').value);
+            const coef2 = parseInt(document.getElementById('coef2').value);
+            const coef3 = parseInt(document.getElementById('coef3').value);
+            const resultDiv = document.getElementById('result');
+            const image = document.getElementById('image');
+
+            if (coef1 === correctAnswer[0] && coef2 === correctAnswer[1] && coef3 === correctAnswer[2]) {
+                resultDiv.innerHTML = "Chúc mừng! Phương trình đúng. Bức tranh đã được mở khóa!";
+                resultDiv.style.color = "green";
+                image.style.display = "block";
+            } else {
+                resultDiv.innerHTML = "Sai rồi! Hãy thử lại.";
+                resultDiv.style.color = "red";
+                image.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

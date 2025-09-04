@@ -3,7 +3,7 @@ let pieces = [];
 let questions = [];
 let imageUrl = '';
 let x = 0; // Will be set dynamically from API response
-var appScriptUrl = "https://script.google.com/macros/s/AKfycbxja0tgG229lkfEyuPZLLTsdgfTkrwi4d9VTCOcw9HSHoSx96nSOy6byog8aexxmUYNzA/exec";
+var appScriptUrl = "https://script.google.com/macros/s/AKfycbxUYBsx0ujuudgGBzKOyCoOrp1lL3VvTaBE8Usfw25Ers74XZPvBzFo9klGsCoWAcgv9A/exec";
 
 function init() {
     // Fetch all data from Google Apps Script API with redirect handling

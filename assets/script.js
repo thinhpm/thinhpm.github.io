@@ -3,59 +3,49 @@ let pieces = [];
 let questions = [];
 let imageUrl = '';
 let x = 0; // Will be set dynamically from API response
-var appScriptUrl = "https://script.google.com/macros/s/AKfycbwbKbe1jdLSEPrubnkRSTiNOPgfLsrMrDFHlW-W6bwIksV1GGzdq88-H2Jeaw3ArWak/exec";
+var appScriptUrl = "https://script.google.com/macros/s/AKfycbzYn0KU2hdP6ERwZVKSustbpuZpZpRQEXafSlGf8FlNoaaIYOocIX4gZx_W2tcf6uuSwQ/exec";
+
+// Helper JSONP loader
+function jsonpRequest(url, callbackName) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        const callback = 'cb_' + Math.random().toString(36).substr(2, 9);
+
+        window[callback] = function(data) {
+            delete window[callback];
+            document.body.removeChild(script);
+            resolve(data);
+        };
+
+        script.src = `${url}&callback=${callback}`;
+        script.onerror = reject;
+        document.body.appendChild(script);
+    });
+}
 
 function init() {
-    // Fetch all data from Google Apps Script API with redirect handling
-    fetch(appScriptUrl +'?action=getData', {
-        method: 'GET',
-        redirect: 'follow', // Follow 302 redirects
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
+    jsonpRequest(appScriptUrl + '?action=getData')
         .then(data => {
             imageUrl = data.image;
             questions = data.questions;
-            x = questions.length; // Set x based on number of questions
+            x = questions.length;
+
             document.getElementById('background').style.backgroundImage = `url(${imageUrl})`;
 
             let cols, rows;
             switch (x) {
-                case 1:
-                    cols = 1; rows = 1; // Exception for x = 1
-                    break;
-                case 2:
-                    cols = 2; rows = 1; // 2 columns, 1 row
-                    break;
-                case 3:
-                    cols = 2; rows = 2; // 2 columns, 2 rows
-                    break;
-                case 4:
-                    cols = 2; rows = 2; // 2 columns, 2 rows
-                    break;
+                case 1: cols = 1; rows = 1; break;
+                case 2: cols = 2; rows = 1; break;
+                case 3: 
+                case 4: cols = 2; rows = 2; break;
                 case 5:
-                    cols = 2; rows = 3; // 2 columns, 3 rows
-                    break;
-                case 6:
-                    cols = 2; rows = 3; // 2 columns, 3 rows
-                    break;
+                case 6: cols = 2; rows = 3; break;
                 case 7:
-                    cols = 2; rows = 4; // 2 columns, 4 rows
-                    break;
-                case 8:
-                    cols = 2; rows = 4; // 2 columns, 4 rows
-                    break;
-                case 9:
-                    cols = 3; rows = 3; // 3 columns, 3 rows
-                    break;
+                case 8: cols = 2; rows = 4; break;
+                case 9: cols = 3; rows = 3; break;
             }
-            const totalWidth = 600; // Total fixed width
-            const totalHeight = 400; // Total fixed height
+
+            const totalWidth = 600, totalHeight = 400;
             let pieceCount = 0;
 
             for (let i = 0; i < rows; i++) {
@@ -84,8 +74,9 @@ function init() {
                 }
             }
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .catch(err => console.error("JSONP error:", err));
 }
+
 
 function showPopup(e) {
     const index = e.target.dataset.index;
@@ -97,7 +88,8 @@ function showPopup(e) {
         inputCount++;
         return `<input type="number" id="${inputId}" placeholder="_">`;
     });
-    document.getElementById('question').innerHTML = questionText; // Render inputs
+    document.getElementById('question').innerHTML = questions[index].question; // Render inputs
+    document.getElementById('input-group').innerHTML = questionText; // Render inputs
     document.getElementById('popup').dataset.index = index;
     document.getElementById('overlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
@@ -111,19 +103,14 @@ function checkAnswer() {
         userAnswer.push(parseInt(document.getElementById(`input${inputCount}`).value) || 0);
         inputCount++;
     }
-    // Check answer via API with redirect handling
-    fetch(`${appScriptUrl}?action=checkAnswer&index=${index}&answer=${JSON.stringify(userAnswer)}`, {
-        method: 'GET',
-        redirect: 'follow', // Follow 302 redirects
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
+
+    document.getElementById('loader').style.display = 'block';
+
+
+    jsonpRequest(`${appScriptUrl}?action=checkAnswer&index=${index}&answer=${JSON.stringify(userAnswer)}`)
         .then(data => {
+            document.getElementById('loader').style.display = 'none';
+
             if (data.correct) {
                 pieces[index].style.display = 'none';
                 closePopup();
@@ -131,7 +118,10 @@ function checkAnswer() {
                 alert('Sai! Thử lại.');
             }
         })
-        .catch(error => console.error('Error checking answer:', error));
+        .catch(err => {
+            document.getElementById('loader').style.display = 'none';
+            console.error("JSONP error:", err);
+        });
 }
 
 function closePopup() {

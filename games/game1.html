@@ -10,12 +10,23 @@
     <p>Điền hệ số để cân bằng phương trình. Hoàn thành để mở khóa bức tranh!</p>
 </br>
     <div id="puzzle-container">
-        <div id="background"></div>
+        <div id="background">
+            <div id="loader-game" style="display: none;">
+                <div class="spinner"></div>
+                <div class="loader-text">Đang tải câu hỏi, vui lòng đợi trong giây lát...</div>
+            </div>
+        </div>
     </div>
     <div id="overlay"></div>
     <div id="popup">
-        <div id="question"></div>
-        <div id="input-group" class="input-group">
+        <div class="row">
+            <span class="label label-question">Câu hỏi:</span>
+            <div id="question"></div>
+        </div>
+        <div class="row">
+            <span class="label">Đáp án:</span>
+            <div id="input-group" class="input-group">
+            </div>
         </div>
         <button id="submit">Kiểm tra</button>
     </div>

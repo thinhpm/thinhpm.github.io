@@ -68,6 +68,13 @@ body {
     margin: 0 5px;
 }
 
+.input-group .input-answer {
+    width: 200px;
+    height: 43px;
+    margin: 0 5px;
+    padding: 0 6px;
+}
+
 #submit {
     padding: 10px 20px; font-size: 16px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px; 
     margin-top: 15px;
@@ -88,6 +95,50 @@ body {
   width: 60px;
   height: 60px;
   animation: spin 1s linear infinite;
+}
+
+.row {
+      margin-bottom: 15px;
+    font-size: 18px;
+    display: flex;
+    align-content: stretch;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: baseline;
+}
+.label {
+  font-weight: bold;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+#loader-game {
+    display:none; 
+    position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+    background: rgba(255,255,255,0.9); padding:15px 25px; border-radius:10px; font-size:16px; text-align:center;
+}
+#loader-game.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 20;
+}
+#loader-game .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ccc;
+    border-top: 5px solid #4CAF50; /* màu xanh */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px auto;
+}
+/* Loader text */
+#loader-game .loader-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
 }
 
 @keyframes spin {

@@ -2,22 +2,35 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trò Chơi Ghép Hình Hóa Học</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
     <h1>Giải Mã Bức Tranh Hóa Học</h1>
     <p>Điền hệ số để cân bằng phương trình. Hoàn thành để mở khóa bức tranh!</p>
-</br>
+    </br>
+    <div id="bar-info">
+        <div id="timer">Thời gian: <span id="timeElapsed">00:00</span></div>
+        <div class="infobar-username">
+            <div id="info-username"></div>
+            <span id="reset-game" class="fa fa-refresh" title="Chơi lại" style="cursor:pointer; margin-left:8px;"></span>
+        </div>
+    </div>
+    
     <div id="puzzle-container">
-        <div id="background">
+        <div id="background" style="background-image: url('../images/gif.gif');">
             <div id="loader-game" style="display: none;">
                 <div class="spinner"></div>
                 <div class="loader-text">Đang tải câu hỏi, vui lòng đợi trong giây lát...</div>
             </div>
+            <button id="start-btn" style="display:none;">Bắt Đầu</button>
+            <button id="restart-btn" style="display:none;">Chơi lại</button>
         </div>
     </div>
     <div id="overlay"></div>
+    <div id="overlay2"></div>
     <div id="popup">
         <div class="row">
             <span class="label label-question">Câu hỏi:</span>
@@ -32,6 +45,13 @@
     </div>
     <div id="loader">
         <div class="loader-spinner"></div>
+    </div>
+    <div id="username-popup" class="popup">
+        <div class="popup-content">
+            <label for="usernameInput">Nhập tên của bạn:</label>
+            <input type="text" id="usernameInput" />
+            <button id="saveUsername">Lưu</button>
+        </div>
     </div>
     <script src="../assets/script.js"></script>
 </body>
